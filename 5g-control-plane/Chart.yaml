@@ -21,4 +21,8 @@ dependencies:
     version: 20.0.4
     repository: https://charts.bitnami.com/bitnami
     condition: kafka.deploy
+  - name: prometheus
+    version: 27.5.1
+    repository: https://prometheus-community.github.io/helm-charts
+    condition: prometheus.deploy
 

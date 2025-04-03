@@ -136,6 +136,31 @@ mongodb:
   architecture: replicaset
   replicaCount: 1
 
+prometheus:
+  deploy: true
+  fullnameOverride: prometheus
+  persistence:
+    enabled: false
+  service:
+    type: ClusterIP
+    port: 9090
+  resources:
+    limits:
+      memory: 2Gi
+      cpu: 2
+    requests:
+      memory: 512Mi
+      cpu: "500m"
+  alertmanager:
+    enabled: true
+    persistence:
+      enabled: false
+  pushgateway:
+    enabled: true
+  server:
+    persistentVolume:
+      enabled: false
+
 config:
   managedByConfigPod:      # config comes from helm by default, if enabled true, then discard
     enabled: true          # helm chart config and use the config from config Pod
@@ -240,7 +265,10 @@ config:
 
   udm:
     deploy: true
-    #podAnnotations:
+    podAnnotations:
+      prometheus.io/scrape: "true"  
+      prometheus.io/path: "/metrics" 
+      prometheus.io/port: "9089"
     serviceType: ClusterIP
     sbi:
       port: 29503
@@ -284,7 +312,10 @@ config:
                 udmProfileBHNPrivateKey: F1AB1074477EBCC7F554EA1C5FC368B1616730155E0041AC447D6301975FECDA
   udr:
     deploy: true
-    #podAnnotations:
+    podAnnotations:
+      prometheus.io/scrape: "true"  
+      prometheus.io/path: "/metrics" 
+      prometheus.io/port: "9089"
     serviceType: ClusterIP
     sbi:
       port: 29504
@@ -315,7 +346,10 @@ config:
               key: /var/run/certs/tls.key
   pcf:
     deploy: true
-    #podAnnotations:
+    podAnnotations:
+      prometheus.io/scrape: "true"  
+      prometheus.io/path: "/metrics" 
+      prometheus.io/port: "9089"
     serviceType: ClusterIP
     sbi:
       port: 29507
@@ -432,7 +466,10 @@ config:
     # serviceAnnotations:
     #   external-dns.alpha.kubernetes.io/hostname: "aether-amf.tenant-site.company.com"
     podAnnotations:
-      field.cattle.io/workloadMetrics: '[{"path":"/metrics","port":9089,"schema":"HTTP"}]'
+      #field.cattle.io/workloadMetrics: '[{"path":"/metrics","port":9089,"schema":"HTTP"}]'
+      prometheus.io/scrape: "true"  
+      prometheus.io/path: "/metrics" 
+      prometheus.io/port: "9089"
     serviceType: ClusterIP
     prometheus:
       port: 9089
@@ -580,7 +617,10 @@ config:
   smf:
     deploy: true
     podAnnotations:
-      field.cattle.io/workloadMetrics: '[{"path":"/metrics","port":9089,"schema":"HTTP"}]'
+      #field.cattle.io/workloadMetrics: '[{"path":"/metrics","port":9089,"schema":"HTTP"}]'
+      prometheus.io/scrape: "true"  
+      prometheus.io/path: "/metrics" 
+      prometheus.io/port: "9089"
     serviceType: ClusterIP
     upfPort: 8805
     n4:
@@ -674,7 +714,10 @@ config:
                 B: UPF
   ausf:
     deploy: true
-    #podAnnotations:
+    podAnnotations:
+      prometheus.io/scrape: "true"  
+      prometheus.io/path: "/metrics" 
+      prometheus.io/port: "9089"
     serviceType: ClusterIP
     sbi:
       port: 29509
