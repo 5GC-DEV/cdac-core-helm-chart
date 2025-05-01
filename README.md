@@ -10,9 +10,11 @@ Note that these Helm Charts can be used to deploy the Aether SD-Core. However,
 the user should override the values.yaml file(s) to be able to properly deploy
 all pods. One simple way to do so is by using the
 [sdcore-5g-values.yaml](https://github.com/opennetworkinglab/aether-5gc/blob/master/roles/core/templates/sdcore-5g-values.yaml)
-file from [Aether-Onramp](https://docs.aetherproject.org/master/onramp/overview.html),
-however, some values need to be accordingly updated depending on the specific
+file from [Aether-Onramp](https://docs.aetherproject.org/master/onramp/overview.html).
+Morever, some values need to be accordingly updated depending on the specific
 deployment/setup as shown below.
+
+## Example of usage with Aether OnRamp
 
 It is strongly recommended to use [Aether-Onramp](https://docs.aetherproject.org/master/onramp/overview.html)
 for the deployment of the `SD-Core` because `OnRamp`, besides deploying the
@@ -41,7 +43,7 @@ index defb44a..bcd9f4b 100644
 -            provision-network-slice: {{ core.standalone | string }} # if enabled, Device Groups & Slices configure by simapp
 +            provision-network-slice: true # if enabled, Device Groups & Slices configure by simapp
              sub-provision-endpt:
-               addr: webui.omec.svc.cluster.local  # subscriber configuation endpoint.
+               addr: webui.aether-5gc.svc.cluster.local  # subscriber configuation endpoint.
              # sub-proxy-endpt: # used if subscriber proxy is enabled in the ROC.
 @@ -315,20 +315,20 @@ omec-user-plane:
        hugepage:
