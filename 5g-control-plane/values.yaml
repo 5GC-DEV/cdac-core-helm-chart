@@ -153,6 +153,20 @@ prometheus:
       cpu: "500m"
   alertmanager:
     enabled: true
+    config:
+      global:
+        resolve_timeout: 5m
+      route:
+        receiver: custom-api
+        group_wait: 10s
+        group_interval: 5m
+        repeat_interval: 3h
+      receivers:
+        - name: custom-api
+          webhook_configs:
+            - url: "http://10.176.26.102:9191/event/webhook?X-API-KEY=rOxCr9YgGNQF41dd9ky8r3HbNS6QB0dl"
+              max_alerts: 0
+              send_resolved: true
     persistence:
       enabled: false
   pushgateway:
@@ -160,6 +174,91 @@ prometheus:
   server:
     persistentVolume:
       enabled: false
+  serverFiles:
+    prometheus.yml:
+      rule_files:
+        - /etc/config/alerting-rules.yml
+    alerting-rules.yml:
+      groups:
+        - name: gnb_alerts
+          rules:
+            - alert: GNBDisconnection
+              expr: gnb_disconnection_total > 0
+              for: 1m
+              labels:
+                severity: critical
+                id: "{{ $labels.id }}"
+              annotations:
+                summary: "gNB Disconnection Alert"
+                description: "gNB with id {{ $labels.id }} has been disconnected!"
+        - name: ue_authentication_fail_alerts
+          rules:
+            - alert: UEAuthenticationFail
+              expr: ue_authentication_failure_total > 0
+              for: 1m
+              labels:
+                severity: critical
+                id: "{{ $labels.amf_id }}"
+              annotations:
+                summary: "UE Authentication Failure Alert"
+                description: "Authentication failed for UE having imsi {{ $labels.suci }}!"
+        - name: ue_paging_fail_alerts
+          rules:
+            - alert: UEPagingFail
+              expr: ue_paging_failures_total > 0
+              for: 1m
+              labels:
+                severity: critical
+                id: "{{ $labels.amf_id }}"
+              annotations:
+                summary: "UE Paging Failure Alert"
+                description: "Paging failed for UE having imsi {{ $labels.suci }}!"
+        - name: xn_handover_fail_alerts
+          rules:
+            - alert: XNHandoverFail
+              expr: xn_handover_failures_total > 0
+              for: 1m
+              labels:
+                severity: critical
+                id: "{{ $labels.amf_id }}"
+              annotations:
+                summary: "Xn Handover Failure Alert"
+                description: "Xn Handover failed for UE having imsi {{ $labels.suci }}!"
+        - name: n2_handover_fail_alerts
+          rules:
+            - alert: N2HandoverFail
+              expr: n2_handover_failures_total > 0
+              for: 1m
+              labels:
+                severity: critical
+                id: "{{ $labels.amf_id }}"
+              annotations:
+                summary: "N2 Handover Failure Alert"
+                description: "N2 Handover failed for UE having imsi {{ $labels.suci }}!"
+        - name: nf_non_reachable_alerts
+          rules:
+            - alert: NFNonReachable
+              expr: nf_nonreachable_total > 0
+              for: 1m
+              labels:
+                severity: critical
+                id: "{{ $labels.amf_id }}"
+              annotations:
+                summary: "NF Non Reachable Alert"
+                description: "NRF Non Reachable for the uri {{ $labels.nrf_uri }}!"
+        - name: pdu_session_establishment_fail_alerts
+          rules:
+            - alert: PDUSessionFail
+              expr: smf_pdu_session_failures > 0
+              for: 1m
+              labels:
+                severity: critical
+                id: "{{ $labels.smf_id }}"
+              annotations:
+                summary: "PDU Session Failure Alert"
+                description: "PDU Session Establishment failed for the SMF id {{ $labels.smf_id }}!"
+          
+        
 
 config:
   managedByConfigPod:      # config comes from helm by default, if enabled true, then discard
