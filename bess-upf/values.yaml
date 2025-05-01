@@ -60,6 +60,11 @@ config:
   upf:
     # Enable privileged when run from VM with sriov support
     privileged: false
+    podAnnotations:
+      prometheus.io/scrape: "true"
+      prometheus.io/path: "/metrics"
+      prometheus.io/port: "8080"
+    serviceType: ClusterIP
     prometheus:
       port: 8080
       # Provide nodePort when serviceType is NodePort
@@ -135,9 +140,12 @@ config:
             priority: 7
 
 service:
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/path: "/metrics"
+    prometheus.io/port: "8080"
   type: ClusterIP
   #externalIp:
-  #annotations:
 
 servicemonitor:
   enabled: false
