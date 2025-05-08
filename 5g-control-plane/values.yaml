@@ -164,7 +164,7 @@ prometheus:
       receivers:
         - name: custom-api
           webhook_configs:
-            - url: "http://10.176.26.102:9191/event/webhook?X-API-KEY=rOxCr9YgGNQF41dd9ky8r3HbNS6QB0dl"
+            - url: "http://WebhookIP:Webhookport/Webhookpath/webhook?X-API-KEY=AddYourAPIKeyhere"
               max_alerts: 0
               send_resolved: true
     persistence:
