@@ -63,6 +63,9 @@ spec:
         - name: coredump
           mountPath: /tmp/coredump
       {{- end }}
+        - mountPath: /etc/localtime
+          name: tz-config
+          readOnly: true      
       volumes:
       - name: nf-config
         configMap:
@@ -76,4 +79,7 @@ spec:
         hostPath:
           path: {{ .Values.config.coreDump.path }}
     {{- end }}
+      - name: tz-config
+        hostPath:
+          path: /etc/localtime    
 {{- end }}
