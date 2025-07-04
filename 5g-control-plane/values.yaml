@@ -491,7 +491,10 @@ config:
             - serviceName: npcf-ue-policy-control
   nssf:
     deploy: true
-    #podAnnotations:
+    podAnnotations:
+      prometheus.io/scrape: "true"  
+      prometheus.io/path: "/metrics" 
+      prometheus.io/port: "9089"
     serviceType: ClusterIP
     sbi:
       port: 29531
@@ -684,7 +687,10 @@ config:
             maxRetryTimes: 4 # the max number of retransmission
   nrf:
     deploy: true
-    #podAnnotations:
+    podAnnotations:
+      prometheus.io/scrape: "true"  
+      prometheus.io/path: "/metrics" 
+      prometheus.io/port: "9089"
     serviceType: ClusterIP
     sbi:
       port: 29510
@@ -848,6 +854,10 @@ config:
           groupId: ausfGroup001
   metricfunc:
     deploy: false
+    podAnnotations:
+      prometheus.io/scrape: "true"  
+      prometheus.io/path: "/metrics" 
+      prometheus.io/port: "9089"
     serviceType: ClusterIP
     prometheus:
       port: 9089
