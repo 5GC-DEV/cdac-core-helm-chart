@@ -135,6 +135,13 @@ mongodb:
   #clusterDomain: cluster.local
   architecture: replicaset
   replicaCount: 1
+  resources:
+    requests:
+      cpu: 2000m # 2 cores
+      memory: 4Gi
+    limits:
+      cpu: 4000m # up to 4 cores
+      memory: 8Gi
 
 prometheus:
   deploy: true
