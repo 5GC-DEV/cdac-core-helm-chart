@@ -14,11 +14,11 @@ version: 2.2.9
 
 dependencies:
   - name: mongodb
-    version: 13.16.4
+    version: 16.5.45
     repository: https://charts.bitnami.com/bitnami
     condition: mongodb.deploy
   - name: kafka
-    version: 20.0.4
+    version: 32.4.3
     repository: https://charts.bitnami.com/bitnami
     condition: kafka.deploy
   - name: prometheus
