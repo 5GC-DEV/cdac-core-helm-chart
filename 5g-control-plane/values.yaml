@@ -117,11 +117,17 @@ resources:
 kafka:
   deploy: false
   fullnameOverride: kafka
-  zookeeper:
-    persistence:
-      enabled: false
-  persistence:
-    enabled: false
+  listeners:
+    client:
+      protocol: PLAINTEXT
+    controller:
+      protocol: PLAINTEXT
+    interbroker:
+      protocol: PLAINTEXT
+    external:
+      protocol: PLAINTEXT
+  controller:
+    replicaCount: 1
 
 mongodb:
   deploy: true
@@ -324,8 +330,6 @@ config:
     NudrDataRepository:
       debugLevel: info
     OpenApi:
-      debugLevel: info
-    Aper:
       debugLevel: info
     Config5g:
       debugLevel: info
@@ -607,7 +611,7 @@ config:
           nrfCacheEvictionInterval: 900
           debugProfilePort: 5001
           kafkaInfo:
-            brokerUri: "kafka-headless"
+            brokerUri: "kafka"
             brokerPort: 9092
             topicName: "sdcore-data-source-amf"
           ngapIpList:
@@ -764,7 +768,7 @@ config:
           nrfCacheEvictionInterval: 900
           debugProfilePort: 5001
           kafkaInfo:
-            brokerUri: "kafka-headless"
+            brokerUri: "kafka"
             brokerPort: 9092
             topicName: "sdcore-data-source-smf"
           pfcp:
@@ -931,6 +935,6 @@ config:
           level: info
         configuration:
           kafkaInfo:
-            brokerUri: "kafka-headless"
+            brokerUri: "kafka"
             brokerPort: 9092
             topicName: "sdcore-data-source-smf"
