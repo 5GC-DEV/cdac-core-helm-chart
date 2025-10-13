@@ -128,6 +128,8 @@ kafka:
       protocol: PLAINTEXT
   controller:
     replicaCount: 1
+    persistence:
+      enabled: false
 
 mongodb:
   deploy: true
